@@ -216,11 +216,14 @@ class FastImageViewManager extends SimpleViewManager<FastImageViewWithUrl> imple
     }
 
     private static boolean isActivityDestroyed(Activity activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             return activity.isDestroyed() || activity.isFinishing();
-        } else {
-            return activity.isDestroyed() || activity.isFinishing() || activity.isChangingConfigurations();
+            } else {
+                return activity.isDestroyed() || activity.isFinishing() || activity.isChangingConfigurations();
+            }
+        } catch(NoSuchMethodError error){
+           return activity.isFinishing() || activity.isChangingConfigurations();
         }
-
     }
 }
